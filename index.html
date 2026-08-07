@@ -17,6 +17,43 @@
   <div class="bg-shape bg-shape-2"></div>
   <div class="bg-shape bg-shape-3"></div>
 
+  <!-- Landing Welcome Screen (首頁) -->
+  <div id="welcome-screen" class="welcome-screen">
+    <div class="welcome-card">
+      <div class="welcome-header">
+        <div class="title-badge">
+          <span class="badge-icon">🔤</span>
+          <span>ENGLISH MATCH</span>
+        </div>
+        <h1 class="welcome-title">英文單字配對大挑戰</h1>
+        <p class="welcome-subtitle">請掃描 QR Code 或點擊下方按鈕即可進入遊戲 🎯</p>
+      </div>
+
+      <!-- QR Code Display Box -->
+      <div class="qrcode-wrapper">
+        <div class="qrcode-frame">
+          <img id="qrcode-img" src="./assets/qrcode.png" alt="https://bdesrush-chc.github.io/engcardpair_1150807/" class="qrcode-img" />
+        </div>
+        <span class="qrcode-caption">📱 掃描 QR Code 進入線上遊戲網址：</span>
+        <a href="https://bdesrush-chc.github.io/engcardpair_1150807/" target="_blank" class="qrcode-url-link">https://bdesrush-chc.github.io/engcardpair_1150807/</a>
+      </div>
+
+      <!-- Feature Tags -->
+      <div class="welcome-features">
+        <div class="feature-tag">✨ 12張精美卡片</div>
+        <div class="feature-tag">⏱️ 精確速度計時</div>
+        <div class="feature-tag">🗣️ 標準英文發音</div>
+        <div class="feature-tag">🌹 浪漫玫瑰蓋牌</div>
+      </div>
+
+      <!-- Enter Game Button -->
+      <button id="btn-enter-game" class="btn btn-enter-game">
+        <span class="btn-icon">🚀</span>
+        <span>點擊進入遊戲 (Enter Game)</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Main Game Container -->
   <div class="app-container">
     <!-- Game Header -->
@@ -57,6 +94,10 @@
 
       <!-- Action Buttons -->
       <div class="controls-bar">
+        <button id="btn-home" class="btn btn-secondary">
+          <span class="btn-icon">📱</span>
+          <span>首頁 QR</span>
+        </button>
         <button id="btn-restart" class="btn btn-primary">
           <span class="btn-icon">🔄</span>
           <span>重新開始</span>
@@ -73,7 +114,7 @@
     <!-- Card Grid -->
     <main class="game-board-container">
       <div id="game-grid" class="game-grid">
-        <!-- 8 Cards will be injected dynamically via JS -->
+        <!-- 12 Cards will be injected dynamically via JS -->
       </div>
     </main>
 
