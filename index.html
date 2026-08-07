@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文單字配對遊戲 | English Word Matching Game</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;800&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background shapes -->
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+  <div class="bg-shape bg-shape-3"></div>
+
+  <!-- Main Game Container -->
+  <div class="app-container">
+    <!-- Game Header -->
+    <header class="game-header">
+      <div class="title-badge">
+        <span class="badge-icon">🔤</span>
+        <span>ENGLISH MATCH</span>
+      </div>
+      <h1 class="game-title">英文單字配對大挑戰</h1>
+      <p class="game-subtitle">將英文單字卡與圖片卡進行正確配對！時間越短分數越高 🚀</p>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-info">
+            <span class="stat-label">時間 (Time)</span>
+            <span id="timer-display" class="stat-value">00:00.0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <span class="stat-label">分數 (Score)</span>
+            <span id="score-display" class="stat-value highlight">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <span class="stat-label">最高紀錄</span>
+            <span id="high-score-display" class="stat-value">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="controls-bar">
+        <button id="btn-restart" class="btn btn-primary">
+          <span class="btn-icon">🔄</span>
+          <span>重新開始</span>
+        </button>
+        <button id="btn-audio-toggle" class="btn btn-icon-only" title="切換音效" aria-label="Toggle Sound">
+          <span id="audio-icon">🔊</span>
+        </button>
+        <button id="btn-speech-toggle" class="btn btn-icon-only" title="切換英文發音" aria-label="Toggle Speech">
+          <span id="speech-icon">🗣️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Card Grid -->
+    <main class="game-board-container">
+      <div id="game-grid" class="game-grid">
+        <!-- 8 Cards will be injected dynamically via JS -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+      <p>🎯 常用英文單字學習：<strong>Apple</strong> (蘋果) • <strong>Cat</strong> (貓咪) • <strong>Dog</strong> (小狗) • <strong>Car</strong> (汽車) • <strong>Sun</strong> (太陽) • <strong>Star</strong> (星星)</p>
+    </footer>
+  </div>
+
+  <!-- Victory Modal -->
+  <div id="victory-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+      
+      <div class="modal-header">
+        <div class="trophy-badge">🏆</div>
+        <h2 class="modal-title">太棒了！挑戰成功！</h2>
+        <p class="modal-subtitle">你完成所有的單字與圖片配對！</p>
+      </div>
+
+      <!-- Star Rating -->
+      <div id="stars-container" class="stars-container">
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+      </div>
+
+      <!-- Final Results -->
+      <div class="result-summary">
+        <div class="result-item">
+          <span class="result-label">⏱️ 完成時間</span>
+          <span id="final-time" class="result-value">00:00.0</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">🎯 最終得分</span>
+          <span id="final-score" class="result-value score-text">0</span>
+        </div>
+        <div class="result-item high-score-item">
+          <span class="result-label">👑 歷史高分</span>
+          <span id="modal-high-score" class="result-value">0</span>
+        </div>
+      </div>
+
+      <div id="new-high-score-banner" class="new-record-banner hidden">
+        🎉 創下新紀錄！ Congratulations!
+      </div>
+
+      <button id="btn-play-again" class="btn btn-success btn-large">
+        <span class="btn-icon">🎮</span>
+        <span>再玩一次 (Play Again)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
