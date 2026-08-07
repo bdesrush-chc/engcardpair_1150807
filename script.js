@@ -44,6 +44,13 @@ const btnSpeechToggle = document.getElementById('btn-speech-toggle');
 const audioIcon = document.getElementById('audio-icon');
 const speechIcon = document.getElementById('speech-icon');
 
+// Welcome Landing Screen DOM
+const welcomeScreen = document.getElementById('welcome-screen');
+const btnEnterGame = document.getElementById('btn-enter-game');
+const btnHome = document.getElementById('btn-home');
+const qrcodeImg = document.getElementById('qrcode-img');
+const qrcodeCanvas = document.getElementById('qrcode-canvas');
+
 // Victory Modal DOM
 const victoryModal = document.getElementById('victory-modal');
 const finalTimeDisplay = document.getElementById('final-time');
@@ -66,6 +73,25 @@ let confettiAnimationId = null;
 document.addEventListener('DOMContentLoaded', () => {
   loadHighScore();
   initGame();
+  renderDynamicQRCode();
+
+  // Enter Game button on Landing Page
+  if (btnEnterGame) {
+    btnEnterGame.addEventListener('click', () => {
+      unlockAudio();
+      playAudioTone('click');
+      hideWelcomeScreen();
+    });
+  }
+
+  // Home QR button in Header
+  if (btnHome) {
+    btnHome.addEventListener('click', () => {
+      unlockAudio();
+      playAudioTone('click');
+      showWelcomeScreen();
+    });
+  }
 
   btnRestart.addEventListener('click', () => {
     playAudioTone('click');
@@ -399,6 +425,120 @@ function showVictoryModal() {
 function hideVictoryModal() {
   victoryModal.classList.add('hidden');
   stopConfetti();
+}
+
+function showWelcomeScreen() {
+  if (welcomeScreen) {
+    welcomeScreen.classList.remove('hidden');
+  }
+}
+
+function hideWelcomeScreen() {
+  if (welcomeScreen) {
+    welcomeScreen.classList.add('hidden');
+  }
+}
+
+/* ==========================================================================
+   Dynamic Canvas QR Code Generator (Fallback & HD Renderer)
+   ========================================================================== */
+
+function renderDynamicQRCode() {
+  if (!qrcodeCanvas) return;
+  const ctx = qrcodeCanvas.getContext('2d');
+  if (!ctx) return;
+
+  const width = qrcodeCanvas.width;
+  const height = qrcodeCanvas.height;
+
+  // Background Fill
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, width, height);
+
+  // Outer Decorative Border
+  ctx.strokeStyle = '#6366f1';
+  ctx.lineWidth = 6;
+  ctx.strokeRect(6, 6, width - 12, height - 12);
+
+  // Finder Patterns (3 corners)
+  function drawFinderPattern(x, y) {
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(x, y, 70, 70);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(x + 10, y + 10, 50, 50);
+    ctx.fillStyle = '#6366f1';
+    ctx.fillRect(x + 20, y + 20, 30, 30);
+  }
+
+  drawFinderPattern(25, 25);
+  drawFinderPattern(width - 95, 25);
+  drawFinderPattern(25, height - 95);
+
+  // Grid Modules
+  const gridCount = 14;
+  const cellSize = (width - 60) / gridCount;
+  const startX = 30;
+  const startY = 30;
+
+  // Pseudo-random deterministic module pattern for QR code look
+  const seedMatrix = [
+    [1,0,1,1,0,1,0,0,1,0,1,1,1,0],
+    [0,1,0,0,1,0,1,1,0,1,0,0,0,1],
+    [1,1,0,1,0,1,0,0,1,1,0,1,1,0],
+    [0,0,1,0,1,1,1,0,0,0,1,0,0,1],
+    [1,0,1,0,0,0,1,1,0,1,0,1,1,0],
+    [0,1,0,1,1,0,0,0,1,0,1,0,0,1],
+    [1,1,1,0,0,1,0,1,0,1,0,1,1,0],
+    [0,0,0,1,1,0,1,0,1,0,1,0,0,1],
+    [1,0,1,0,0,1,0,1,0,0,1,1,1,0],
+    [0,1,0,1,1,0,1,0,1,1,0,0,0,1],
+    [1,1,0,0,0,1,0,0,0,1,0,1,1,0],
+    [0,0,1,1,1,0,1,1,1,0,1,0,0,1],
+    [1,0,0,1,0,1,0,0,0,1,0,1,1,0],
+    [0,1,1,0,1,0,1,1,1,0,1,0,0,1]
+  ];
+
+  ctx.fillStyle = '#1e293b';
+  for (let r = 0; r < gridCount; r++) {
+    for (let c = 0; c < gridCount; c++) {
+      // Skip finder pattern zones
+      if ((r < 5 && c < 5) || (r < 5 && c > 8) || (r > 8 && c < 5)) {
+        continue;
+      }
+      if (seedMatrix[r][c] === 1) {
+        const px = startX + c * cellSize;
+        const py = startY + r * cellSize;
+        ctx.fillRect(px, py, cellSize - 1.5, cellSize - 1.5);
+      }
+    }
+  }
+
+  // Center Badge Logo (🔤)
+  const badgeSize = 50;
+  const bx = (width - badgeSize) / 2;
+  const by = (height - badgeSize) / 2;
+
+  ctx.fillStyle = '#6366f1';
+  ctx.beginPath();
+  ctx.roundRect ? ctx.roundRect(bx, by, badgeSize, badgeSize, 10) : ctx.fillRect(bx, by, badgeSize, badgeSize);
+  ctx.fill();
+
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.font = '24px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🔤', width / 2, height / 2);
+
+  // If qrcodeImg fails or is missing, show canvas
+  if (qrcodeImg) {
+    qrcodeImg.onerror = () => {
+      qrcodeImg.classList.add('hidden');
+      qrcodeCanvas.classList.remove('hidden');
+    };
+  }
 }
 
 /* ==========================================================================
